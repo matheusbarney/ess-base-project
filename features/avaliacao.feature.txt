@@ -1,1 +1,17 @@
 Avaliar reserva - [Conteúdo] 
+
+Scenario: Avaliar reserva no início da minha estadia, com um comentário pessoal.
+Given Sou o usuário “Barney Matheus” na página da reserva “Ilha de Itaipú” onde estou registrado.
+And Marco a minha “Avaliação” como “5” estrelas
+And Escrevo um comentário.
+When Clico em “Postar Avaliação”
+Then Minha avaliação é registrada na página
+
+Scenario: Ocultar comentário em reserva, como administrador de sua página
+Given Sou o locador “José Paulo” na página de uma reserva “Rua Dos Bobos” pertencente a mim
+And Tem uma avaliação com comentário “Tenho problema com esse locador!” preenchido na página
+And a avaliação tem “0” Estrelas
+When Clico em “Ocultar comentário”
+And eu seleciono a opção “Confirmar Ocultação”
+Then A avaliação de “0” Estrelas persiste na página
+And o comentário é substituído por “Comentário ocultado”.
