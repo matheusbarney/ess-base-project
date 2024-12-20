@@ -1,1 +1,10 @@
 Busca de reservas com filtro - [Conteúdo]
+
+Scenario: Apagar filtros já preenchidos
+Given Sou um usuário na página principal
+And Na busca já está preenchido “Valor Mínimo” como “2” reais por dia 
+And Na busca já está preenchido “Valor Máximo” como “1000” reais por dia.
+When Clico em “Apagar Filtros”
+And eu seleciono “Confirmar”
+Then Os filtros de busca deixam de ser preenchidos
+And mensagem de filtros removidos aparece
