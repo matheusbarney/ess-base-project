@@ -1,0 +1,32 @@
+[
+    {
+        "ativo": true,
+        "titulo": "Residencia Schrader",
+        "descricao": "lorem",
+        "imagens": "casa_praia.jpg",
+        "petfriendly": true,
+        "endereco": "Rua das Flores, 123, Praia Grande, PE",
+        "tipo": "Casa",
+        "disponibilidade": "2025-02-10 a 2025-02-20",
+        "preco": 500,
+        "usuario": "1",
+        "avalMedia": 4.5,
+        "qntdAlugado": 10,
+        "destacado": true
+    },
+    {
+        "ativo": true,
+        "titulo": "Residencia White",
+        "descricao": "ipsum",
+        "imagens": "casa_praia.jpg",
+        "petfriendly": false,
+        "endereco": "308 Negra Arroyo Lane, Albuquerque, PE",
+        "tipo": "Casa",
+        "disponibilidade": "2025-02-01 a 2025-02-10",
+        "preco": 700,
+        "usuario": "9",
+        "avalMedia": 2.5,
+        "qntdAlugado": 5,
+        "destacado": false
+    }
+]
