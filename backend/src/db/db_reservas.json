@@ -9,7 +9,7 @@
         "tipo": "Casa",
         "disponibilidade": "2025-02-10 a 2025-02-20",
         "preco": 500,
-        "usuario": "1",
+        "usuario": "9",
         "avalMedia": 4.5,
         "qntdAlugado": 10,
         "destacado": true
@@ -20,11 +20,11 @@
         "descricao": "ipsum",
         "imagens": "casa_praia.jpg",
         "petfriendly": false,
-        "endereco": "308 Negra Arroyo Lane, Albuquerque, PE",
+        "endereco": "Totó, PE",
         "tipo": "Casa",
         "disponibilidade": "2025-02-01 a 2025-02-10",
         "preco": 700,
-        "usuario": "9",
+        "usuario": "1",
         "avalMedia": 2.5,
         "qntdAlugado": 5,
         "destacado": false

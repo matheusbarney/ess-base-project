@@ -12,15 +12,15 @@
         "usuario": "4",
         "nota": 5,
         "comentario": "Hello, Waltuh.",
-        "endereco": "308 Negra Arroyo Lane, Albuquerque, PE",
-        "oculto": false
+        "endereco": "Totó, PE",
+        "oculto": true
     },
     {
-        "id": 2,
+        "id": 3,
         "usuario": "9",
         "nota": 0,
-        "comentario": "I am the one who rocks.",
-        "endereco": "308 Negra Arroyo Lane, Albuquerque, PE",
+        "comentario": "I am the one who knocks.",
+        "endereco": "Totó, PE",
         "oculto": false
     },
     {
@@ -28,47 +28,7 @@
         "usuario": "9",
         "nota": 5,
         "comentario": "Say my name.",
-        "endereco": "08 Negra Arroyo Lane, Albuquerque, PE",
-        "oculto": false
-    },
-    {
-        "id": 5,
-        "usuario": "9",
-        "nota": 5,
-        "comentario": "Say my name.",
-        "endereco": "08 Negra Arroyo Lane, Albuquerque, PE",
-        "oculto": false
-    },
-    {
-        "id": 6,
-        "usuario": "9",
-        "nota": 5,
-        "comentario": "Say my name.",
-        "endereco": "08 Negra Arroyo Lane, Albuquerque, PE",
-        "oculto": false
-    },
-    {
-        "id": 7,
-        "usuario": "9",
-        "nota": 5,
-        "comentario": "Say my name.",
-        "endereco": "08 Negra Arroyo Lane, Albuquerque, PE",
-        "oculto": false
-    },
-    {
-        "id": 8,
-        "usuario": "9",
-        "nota": 5,
-        "comentario": "Say my name.",
-        "endereco": "08 Negra Arroyo Lane, Albuquerque, PE",
-        "oculto": false
-    },
-    {
-        "id": 9,
-        "usuario": "9",
-        "nota": 5,
-        "comentario": "Say my name.",
-        "endereco": "08 Negra Arroyo Lane, Albuquerque, PE",
+        "endereco": "Totó, PE",
         "oculto": false
     }
 ]

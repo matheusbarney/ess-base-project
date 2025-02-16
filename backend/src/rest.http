@@ -1,0 +1,18 @@
+### Get all avaliacoes
+GET http://127.0.0.1:8001/avaliacoes
+
+### Add a new avaliacao
+POST http://127.0.0.1:8001/avaliacoes/add
+Content-Type: application/json
+
+{
+    "id": 3,
+    "usuario": "4",
+    "nota": 5,
+    "comentario": "Great place!",
+    "endereco": "Totó, PE",
+    "oculto": false
+}
+
+### Ocultar avaliacao
+PATCH http://127.0.0.1:8001/avaliacoes/ocultar?cpfnj=1&comentario_id=1

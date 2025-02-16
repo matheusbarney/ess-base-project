@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'src')))
 
 import pytest
-from pytest_bdd import scenario, given, when, then
+from pytest_bdd import scenario, given, when, then, parsers
 from fastapi.testclient import TestClient
 from src.api.queries import app
 
@@ -23,48 +23,45 @@ client = TestClient(app)
 filters = {}
 
 @given('Sou um usuário')
-def step_impl():
+def given_user():
     pass
 
-@given('Filtro "UF" como "PE"')
-def step_impl():
-    filters['uf'] = 'PE'
+@given(parsers.cfparse('Filtro "UF" como "{uf}"'))
+def given_filter_uf(uf: str):
+    filters['uf'] = uf
 
-@given('Filtro "Casa" para "Tipo de Reserva"')
-def step_impl():
-    filters['tipo'] = 'Casa'
+@given(parsers.cfparse('Filtro "{tipo}" para "Tipo de Reserva"'))
+def given_filter_tipo(tipo: str):
+    filters['tipo'] = tipo
 
-@given('Filtro "Sim" para "Pet Friendly"')
-def step_impl():
-    filters['petfriendly'] = True
+@given(parsers.cfparse('Filtro "{petfriendly}" para "Pet Friendly"'))
+def given_filter_petfriendly(petfriendly: str):
+    filters['petfriendly'] = petfriendly.lower() == 'sim'
 
-@given('Filtro "Sim" para "Destacado"')
-def step_impl():
-    filters['destacado'] = True
+@given(parsers.cfparse('Filtro "{destacado}" para "Destacado"'))
+def given_filter_destacado(destacado: str):
+    filters['destacado'] = destacado.lower() == 'sim'
 
-@given('Filtro "UF" como "SP"')
-def step_impl():
-    filters['uf'] = 'SP'
+@given(parsers.cfparse('Filtro "{valmin:d}" para "Valor Mínimo"'))
+def given_filter_valmin(valmin: int):
+    filters['valmin'] = valmin
 
-@given('Filtro "50" para "Valor Mínimo"')
-def step_impl():
-    filters['valmin'] = 50
+@given(parsers.cfparse('Filtro "{valmax:d}" para "Valor Máximo"'))
+def given_filter_valmax(valmax: int):
+    filters['valmax'] = valmax
 
-@given('Filtro "150" para "Valor Máximo"')
-def step_impl():
-    filters['valmax'] = 150
+@given(parsers.cfparse('Filtro "{avaliacao:d}" para "Avaliação"'))
+def given_filter_avaliacao(avaliacao: int):
+    filters['avaliacao'] = avaliacao
 
-@given('Filtro "3" para "Avaliação"')
-def step_impl():
-    filters['avaliacao'] = 3
+@when('Eu busco', target_fixture="context")
+def when_search(context):
+    context['response'] = client.get("/reservas", params=filters)
+    return context
 
-@when('Eu busco')
-def step_impl():
-    global response
-    response = client.get("/reservas", params=filters)
-
-@then('Sou dado uma lista filtrada de reservas, ou uma alerta caso não exista')
-def step_impl():
+@then('Sou dado uma lista filtrada de reservas, ou uma alerta caso não exista', target_fixture="context")
+def then_check_response(context):
+    response = context['response']
     if response.status_code == 404:
         assert response.json() == {"detail": "Nenhuma reserva encontrada dentro desses filtros"}
     else:
@@ -86,3 +83,4 @@ def step_impl():
                 assert reserva['preco'] <= filters['valmax']
             if 'avaliacao' in filters:
                 assert reserva['avalMedia'] >= float(filters['avaliacao'])
+    return context

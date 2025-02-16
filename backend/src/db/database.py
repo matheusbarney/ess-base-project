@@ -15,7 +15,6 @@ class Database():
         self.db = None
         self.connect()
 
-
     def connect(self):
         try:
             mongo_connection = MongoClient(env.DB_URL)
@@ -28,7 +27,6 @@ class Database():
             logger.info("MongoDB connected!")
             logger.info(f"Server Version: {mongo_connection.server_info()['version']}")
             print("--------------------")
-
 
         except errors.ServerSelectionTimeoutError as err:
 
@@ -44,7 +42,6 @@ class Database():
 
     def get_db(self):
         return self.db
-
 
     def create_collection(
         self,
@@ -174,38 +171,108 @@ class Database():
             **item
         }
 
-    # TODO: implement update_item method
-    # def update_item(self, collection_name: str, item_id: str, item: dict) -> dict:
+    def get_filtered_queries(self, collection_name: str, filters: dict) -> list:
         """
-        Update an item in a collection
+        Get filtered queries from a collection
 
         Parameters:
         - collection_name: str
-            The name of the collection where the item is stored
-        - item_id: str
-            The ID of the item to update
-        - item: dict
-            New item data
+            The name of the collection
+        - filters: dict
+            The filters to apply to the query
+
+        Returns:
+        - list
+            A list of items that match the filters
+
+        """
+        collection: Collection = self.db[collection_name]
+
+        query = {}
+        if 'uf' in filters:
+            query['endereco'] = {'$regex': f'{filters["uf"]}$'}
+        if 'tipo' in filters:
+            query['tipo'] = filters['tipo']
+        if 'petfriendly' in filters:
+            query['petfriendly'] = filters['petfriendly']
+        if 'destacado' in filters:
+            query['destacado'] = filters['destacado']
+        if 'valmin' in filters:
+            query['preco'] = {'$gte': filters['valmin']}
+        if 'valmax' in filters:
+            query['preco'] = {'$lte': filters['valmax']}
+        if 'avaliacao' in filters:
+            query['avalMedia'] = {'$gte': filters['avaliacao']}
+
+        items = list(collection.find(query, {"_id": 0}))
+
+        return items
+
+    def add_review(self, collection_name: str, review_data: dict) -> dict:
+        """
+        Add a review to a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the review will be stored
+        - review_data: dict
+            The review data to insert
 
         Returns:
         - dict:
-            The updated item
+            The inserted review
 
         """
+        review_data["id"] = str(uuid4())[:self.ID_LENGTH]
 
-    # TODO: implement delete_item method
-    # def delete_item(self, collection_name: str, item_id: str) -> list:
+        collection: Collection = self.db[collection_name]
+
+        review_id = collection.insert_one(review_data).inserted_id
+        return {
+            "id": str(review_id),
+            **review_data
+        }
+
+    def hide_review(self, collection_name: str, cpfnj: str, comentario_id: int) -> dict:
         """
-        Delete an item of a collection
+        Hide a review in a collection
 
         Parameters:
         - collection_name: str
-            The name of the collection where the item is stored
-        - item_id: str
-            The ID of the item to delete
+            The name of the collection where the review is stored
+        - cpfnj: str
+            The CPF of the user who owns the review
+        - comentario_id: int
+            The ID of the review to hide
 
         Returns:
-        - list:
-            A list of all items in the collection.
+        - dict or None:
+            The updated review if found, None otherwise
 
         """
+        collection: Collection = self.db[collection_name]
+
+        review = collection.find_one({"id": str(comentario_id), "usuario": cpfnj})
+        if review:
+            collection.update_one({"id": str(comentario_id)}, {"$set": {"oculto": True}})
+            review["oculto"] = True
+            return review
+        return None
+
+    def get_all_reviews(self) -> list:
+        """
+        Get all reviews from the reviews collection
+
+        Returns:
+        - list
+            A list of all reviews
+
+        """
+        collection: Collection = self.db['reviews']
+
+        reviews = list(collection.find({}, {"_id": 0}))
+
+        return reviews
+
+# Instância do banco de dados
+database = Database()
