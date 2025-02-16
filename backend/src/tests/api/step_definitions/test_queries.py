@@ -6,7 +6,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 import pytest
 from pytest_bdd import scenario, given, when, then, parsers
 from fastapi.testclient import TestClient
+from src.service.impl.queries_service import QueriesService
 from src.api.queries import app
+from src.db.database import database
 
 @scenario(scenario_name="Buscar reservas em Recife que sejam casas pet friendly e destacadas", feature_name="../features/queries.feature")
 def test_service_search_reserva():
@@ -56,17 +58,17 @@ def given_filter_avaliacao(avaliacao: int):
 
 @when('Eu busco', target_fixture="context")
 def when_search(context):
-    context['response'] = client.get("/reservas", params=filters)
+    context['response'] = QueriesService.get_queries(filters)
     return context
 
 @then('Sou dado uma lista filtrada de reservas, ou uma alerta caso não exista', target_fixture="context")
 def then_check_response(context):
     response = context['response']
     if response.status_code == 404:
-        assert response.json() == {"detail": "Nenhuma reserva encontrada dentro desses filtros"}
+        assert response.model_dump_json() == '{"message":"No reservations found with the given filters","status_code":404,"data":null}'
     else:
         assert response.status_code == 200
-        reservas = response.json()
+        reservas = response.data
         assert isinstance(reservas, list)
         for reserva in reservas:
             if 'uf' in filters:

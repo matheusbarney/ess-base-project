@@ -60,3 +60,17 @@ class HTTPResponses:
             message="Review hidden successfully",
             status_code=200,
         )
+
+    @staticmethod
+    def QUERIES_NOT_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="No reservations found with the given filters",
+            status_code=404,
+        )
+
+    @staticmethod
+    def QUERIES_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="Reservations found",
+            status_code=200,
+        )
